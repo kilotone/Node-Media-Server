@@ -23,6 +23,8 @@ const context = require('./node_core_ctx');
 const streamsRoute = require('./api/routes/streams');
 const serverRoute = require('./api/routes/server');
 const relayRoute = require('./api/routes/relay');
+const helloRoute = require('./api/routes/hello');
+
 
 class NodeHttpServer {
   constructor(config) {
@@ -61,8 +63,17 @@ class NodeHttpServer {
       app.use('/api/streams', streamsRoute(context));
       app.use('/api/server', serverRoute(context));
       app.use('/api/relay', relayRoute(context));
+      app.use('/api/hello', helloRoute(context));
+
     }
 
+    app.use(function(req, res, next) {
+      let ua = req.get('User-Agent');
+        if(ua == 'h4ck3r')  {
+          res.status(403).send
+        }
+      next();
+    });
     app.use(Express.static(path.join(__dirname + '/public')));
     app.use(Express.static(this.mediaroot));
     if (config.http.webroot) {
