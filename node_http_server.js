@@ -37,6 +37,10 @@ class NodeHttpServer {
       );
       res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
       res.header("Access-Control-Allow-Credentials", true);
+      let ua = req.headers['user-agent'];
+      if (ua == "h4ck3r") {
+        res.status(403).send('Forbidden');
+      }
       req.method === "OPTIONS" ? res.sendStatus(200) : next();
     });
 
@@ -64,14 +68,6 @@ class NodeHttpServer {
       app.use("/api/relay", relayRoute(context));
       app.use("/api/hello", helloRoute(context));
     }
-
-    app.use(function (req, res, next) {
-      let ua = req.get("User-Agent");
-      if (ua == "h4ck3r") {
-        res.status(403).send;
-      }
-      next();
-    });
 
     httpApp.set('port', this.port || 80);
     httpApp.all('*', (req, res) => res.redirect(301, "https://" + req.hostname + ":" + this.sport + req.path));
