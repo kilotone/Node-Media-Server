@@ -17,6 +17,8 @@ const streamsRoute = require("./api/routes/streams");
 const serverRoute = require("./api/routes/server");
 const relayRoute = require("./api/routes/relay");
 const helloRoute = require("./api/routes/hello");
+const scraperRoute = require("./api/routes/scraper");
+
 
 class NodeHttpServer {
   constructor(config) {
@@ -67,6 +69,8 @@ class NodeHttpServer {
       app.use("/api/server", serverRoute(context));
       app.use("/api/relay", relayRoute(context));
       app.use("/api/hello", helloRoute(context));
+      app.use("/api/scraper", scraperRoute(context));
+
     }
 
     httpApp.set('port', this.port || 80);
